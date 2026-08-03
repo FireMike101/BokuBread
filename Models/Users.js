@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
     },
     hasAtmCard: {
         type: Boolean,
-        required: true,
+        required: false,
     },
     phone: {
         type: String,
