@@ -14,13 +14,12 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        minlength: 6,
     },
     gender: {
         type: String,
         required: true,
     },
-    hasAtmCard: {
+    HasAdminAccess: {
         type: Boolean,
         required: false,
     },
@@ -30,13 +29,18 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ['user', 'admin'],
+        enum: ['superadmin', 'storekeeper', 'salesperson'],
         default: 'user',
     },
 
-    timestamps: true
 
-});
+    
+},
+{timestamps: true}
+
+);
 
 //create model from schema
 const User = mongoose.model('User', userSchema);
+
+module.exports = User; //export the model to use in other files  
