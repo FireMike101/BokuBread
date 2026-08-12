@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        required: true,
+        required: false,
         unique: true,
     },
     password: {
@@ -19,10 +19,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    HasAdminAccess: {
-        type: Boolean,
-        required: false,
-    },
     phone: {
         type: String,
         required: true,
@@ -30,7 +26,11 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         enum: ['superadmin', 'storekeeper', 'salesperson'],
-        default: 'user',
+        //default: 'salesperson',
+    },
+    HasAdminAccess: {
+        type: Boolean,
+        required: false,
     },
 
 

@@ -10,7 +10,7 @@ exports.createUser = async (req, res) => {
 
 
         //check if all required fields are provided
-        if(!req.body.name || !req.body.email || !req.body.password || !req.body.gender || !req.body.phone){
+        if(!name || !email || !password || !gender || !phone){
             return res.status(400).json({ message: 'Please provide all required fields' });
         }
 
@@ -26,7 +26,7 @@ exports.createUser = async (req, res) => {
     }
 
     //encrypt password
-    const salt = await bcrypt.genSalt(30);
+    const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
     //create user
@@ -36,7 +36,7 @@ exports.createUser = async (req, res) => {
         password: hashedPassword,
         gender: req.body.gender,
         phone: req.body.phone,
-        role: req.body.role || 'user', //default to user if not provided
+        role: req.body.role,//Default role is salesperson if not provided
         HasAdminAccess: req.body.HasAdminAccess || false, //default to false if not provided    
     
     });
@@ -76,7 +76,7 @@ exports.loginUser = async (req, res) => {
         //const token = generateToken(user); //implement this function to generate a token
 
         const jwt = require('jsonwebtoken');
-        const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ id: user._id, email: user.email, name: user.name }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
         res.status(200).json({ message: 'Login successful', token });
     } catch (error) {
