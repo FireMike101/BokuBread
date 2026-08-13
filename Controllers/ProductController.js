@@ -1,5 +1,8 @@
 const Product = require('../Models/Products');
 
+
+
+
 //create a new product longer way
 // const createProduct = async (req, res) => {
 //     try {
