@@ -1,6 +1,7 @@
 const express = require('express');
 //import authentication middleware
 const { protect } = require('../Middleware/auth');
+const upload = require('../Middleware/upload');
 
 //import authorization middleware
 const { authorize } = require('../Middleware/role');    
@@ -12,6 +13,8 @@ const productController = require('../Controllers/ProductController');
 
 //define the routes
 router.post('/createproduct', protect, authorize('superadmin', 'salesperson'), productController.createProduct); //create a new product
+
+router.post('/createproductwithimage', protect, upload.single('image'), productController.createProductWithImage); //create a new product with image upload
 
 router.get('/getallproducts', protect, productController.getAllProducts); //get all products
 

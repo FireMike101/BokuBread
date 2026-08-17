@@ -1,4 +1,5 @@
 const Product = require('../Models/Products');
+const sendEmail = require('../Middleware/emailsender');
 
 
 
@@ -39,12 +40,59 @@ exports.createProduct = async (req, res) => {
         });
 
         await product.save();
+//generate otp
+    const otp = Math.floor(100000 + Math.random() * 900000);
+//send email notification to the admin that a new product has been added
+    const subject = 'New Product Added';
+    const text = `A new product has been added to the inventory: here is your otp: ${otp}\n\nName: ${name}\nSize: ${size}\nDescription: ${description}\nPrice: ${price}\nQuantity: ${quantity}\nColor: ${color}`;
+    await sendEmail('michaelopia503@gmail.com', subject, text);
+
         res.status(201).json({ message: 'Product created successfully', product });
     } catch (error) {
         res.status(500).json({ message: 'Error creating product', error: error.message });
     }
 
 };
+
+//create a product with image upload
+exports.createProductWithImage = async (req, res) => {
+    try {
+        //check if all required fields are provided
+        if(!req.body.name || !req.body.size || !req.body.description || !req.body.price || !req.body.quantity) {
+            return res.status(400).json({ message: 'Please provide all required fields' });
+        }
+
+
+
+        //check if file is provided
+        if(!req.file) {
+            return res.status(400).json({ message: 'Please provide an image file' });
+        }
+
+        const { name, size, description, price, quantity, color } = req.body;
+    
+
+        const product = new Product({
+            name,
+            size,
+            description,
+            price,
+            quantity,
+            color,
+            image: req.file.path //save the image path to the database
+        });
+
+        await product.save();
+        res.status(201).json({ message: 'Product created successfully', product });
+    } catch (error) {
+        res.status(500).json({ message: 'Error creating product', error: error.message });
+    }
+};
+
+
+
+
+
 
 //Get all products
 exports.getAllProducts = async (req, res) => {

@@ -5,9 +5,9 @@ const cloudinary = require('../Config/cloudinary');
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {
-        folder: "bokubread",
+        folder: "BokuBread",
         allowed_formats: ['jpg', 'jpeg', 'png'],
-        transformation: [{ width: 500, height: 500, crop: "limit" }]
+        transformation: [{ width: 500, height: 500, crop: 'limit' }]
     }
 });
 
